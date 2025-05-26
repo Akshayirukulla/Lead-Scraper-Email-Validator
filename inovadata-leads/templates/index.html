@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>InovaData Lead Scraper - Dark Mode</title>
+  <style>
+    :root {
+      --dark-bg: #121212;
+      --dark-text: #e0e0e0;
+      --dark-accent: #bb86fc;
+      --dark-input-bg: #1e1e1e;
+      --dark-input-border: #333;
+      --light-bg: #f9f9f9;
+      --light-text: #222;
+      --light-accent: #6200ee;
+      --light-input-bg: #fff;
+      --light-input-border: #ccc;
+    }
+
+    /* Default dark mode styles */
+    body {
+      background-color: var(--dark-bg);
+      color: var(--dark-text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 30px auto;
+      max-width: 800px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding: 0 15px 50px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: var(--dark-accent);
+      user-select: none;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      background-color: var(--dark-input-bg);
+      color: var(--dark-text);
+      border: 1.5px solid var(--dark-input-border);
+      border-radius: 6px;
+      padding: 12px 15px;
+      font-size: 1rem;
+      flex-grow: 1;
+      min-width: 220px;
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--dark-accent);
+      box-shadow: 0 0 5px var(--dark-accent);
+    }
+
+    button {
+      background-color: var(--dark-accent);
+      color: var(--dark-bg);
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 3px 8px rgba(187, 134, 252, 0.5);
+    }
+    button:hover {
+      background-color: #9a67ea;
+    }
+
+    /* Dark/light mode toggle button */
+    #toggleDarkMode {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--dark-accent);
+      color: var(--dark-bg);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 3px 8px rgba(187, 134, 252, 0.7);
+      transition: background-color 0.3s ease;
+      z-index: 100;
+    }
+    #toggleDarkMode:hover {
+      background-color: #9a67ea;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    thead {
+      background-color: var(--dark-input-bg);
+      user-select: none;
+    }
+    th, td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #333;
+      text-align: left;
+      font-size: 1rem;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #1a1a1a;
+    }
+    tbody tr:hover {
+      background-color: var(--dark-accent);
+      color: var(--dark-bg);
+      transition: background-color 0.3s ease;
+    }
+
+    /* LIGHT MODE overrides */
+    body.light-mode {
+      background-color: var(--light-bg);
+      color: var(--light-text);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    body.light-mode h1 {
+      color: var(--light-accent);
+    }
+    body.light-mode input[type="text"] {
+      background-color: var(--light-input-bg);
+      color: var(--light-text);
+      border: 1.5px solid var(--light-input-border);
+      transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+    body.light-mode input[type="text"]:focus {
+      border-color: var(--light-accent);
+      box-shadow: 0 0 5px var(--light-accent);
+    }
+    body.light-mode button,
+    body.light-mode #toggleDarkMode {
+      background-color: var(--light-accent);
+      color: var(--light-bg);
+      box-shadow: 0 3px 8px rgba(98, 0, 238, 0.6);
+      transition: background-color 0.3s ease;
+    }
+    body.light-mode button:hover,
+    body.light-mode #toggleDarkMode:hover {
+      background-color: #3700b3;
+    }
+    body.light-mode table {
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    body.light-mode thead {
+      background-color: var(--light-input-bg);
+    }
+    body.light-mode tbody tr:nth-child(even) {
+      background-color: #f0f0f0;
+    }
+    body.light-mode tbody tr:hover {
+      background-color: var(--light-accent);
+      color: var(--light-bg);
+    }
+  </style>
+</head>
+<body>
+  <button id="toggleDarkMode">Light Mode</button>
+
+  <h1>Lead Scraper & Email Validator (InovaData)</h1>
+  <form id="leadForm">
+    <input type="text" id="company" placeholder="Enter company domain e.g. openai.com" required />
+    <button type="submit">Find Leads</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Email</th>
+        <th>Confidence</th>
+      </tr>
+    </thead>
+    <tbody id="leadsBody"></tbody>
+  </table>
+
+  <script>
+    // Dark mode toggle logic
+    const toggleBtn = document.getElementById('toggleDarkMode');
+    const body = document.body;
+
+    toggleBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      if (body.classList.contains('light-mode')) {
+        toggleBtn.textContent = 'Dark Mode';
+      } else {
+        toggleBtn.textContent = 'Light Mode';
+      }
+    });
+
+    // Form submit & fetch leads
+    const form = document.getElementById("leadForm");
+    const leadsBody = document.getElementById("leadsBody");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const company = document.getElementById("company").value.trim();
+      if (!company) return;
+
+      // Clear previous results and show loading text
+      leadsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; font-style:italic;">Loading...</td></tr>`;
+
+      try {
+        const res = await fetch("/get-leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ company })
+        });
+
+        if (!res.ok) throw new Error("Network response was not ok");
+
+        const leads = await res.json();
+
+        leadsBody.innerHTML = "";
+
+        if (leads.length === 0) {
+          leadsBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No leads found.</td></tr>`;
+        } else {
+          leads.forEach(lead => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${lead.name}</td>
+              <td>${lead.position}</td>
+              <td>${lead.email}</td>
+              <td>${lead.confidence}</td>
+            `;
+            leadsBody.appendChild(row);
+          });
+        }
+      } catch (error) {
+        leadsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#f44336;">Error fetching leads.</td></tr>`;
+        console.error("Fetch error:", error);
+      }
+    });
+  </script>
+</body>
+</html>
